@@ -41,7 +41,7 @@ const NonMemoizedMarkdown = ({ children }: { children: string }) => {
     },
     ul: ({ node, children, ...props }) => {
       return (
-        <ul className="list-decimal list-outside ml-4" {...props}>
+        <ul className="list-disc list-outside ml-4" {...props}>
           {children}
         </ul>
       );
@@ -108,16 +108,36 @@ const NonMemoizedMarkdown = ({ children }: { children: string }) => {
         </h6>
       );
     },
+    p: ({ node, children, ...props }) => {
+      return (
+        <p className="mb-2 leading-relaxed" {...props}>
+          {children}
+        </p>
+      );
+    },
+    blockquote: ({ node, children, ...props }) => {
+      return (
+        <blockquote className="border-l-4 border-gray-300 pl-4 italic my-4 text-gray-600" {...props}>
+          {children}
+        </blockquote>
+      );
+    },
   };
 
   return (
-    <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
-      {children}
-    </ReactMarkdown>
+    <div className="prose prose-sm max-w-none">
+      <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
+        {children}
+      </ReactMarkdown>
+    </div>
   );
 };
 
 export const Markdown = memo(
   NonMemoizedMarkdown,
-  (prevProps, nextProps) => prevProps.children === nextProps.children,
+  (prevProps, nextProps) => {
+    // Only re-render if content has actually changed
+    // This helps with streaming performance
+    return prevProps.children === nextProps.children;
+  },
 );

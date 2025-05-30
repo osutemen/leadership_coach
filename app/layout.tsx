@@ -5,13 +5,13 @@ import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/navbar";
 
 export const metadata = {
-  title: "AI SDK Python Streaming Preview",
+  title: "Leadership Coach - AI Assistant",
   description:
-    "Use the Data Stream Protocol to stream chat completions from a Python endpoint (FastAPI) and display them using the useChat hook in your Next.js application.",
+    "Your personal leadership coach powered by advanced AI. Get in-depth guidance on leadership practices, professional development, and business intelligence.",
   openGraph: {
     images: [
       {
-        url: "/og?title=AI SDK Python Streaming Preview",
+        url: "/og?title=Leadership Coach - AI Assistant",
       },
     ],
   },
@@ -19,7 +19,7 @@ export const metadata = {
     card: "summary_large_image",
     images: [
       {
-        url: "/og?title=AI SDK Python Streaming Preview",
+        url: "/og?title=Leadership Coach - AI Assistant",
       },
     ],
   },
@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head></head>
-      <body className={cn(GeistSans.className, "antialiased dark")}>
+      <body className={cn(GeistSans.className, "antialiased")}>
         <Toaster position="top-center" richColors />
         <Navbar />
         {children}

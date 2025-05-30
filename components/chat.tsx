@@ -7,16 +7,42 @@ import { useScrollToBottom } from "@/hooks/use-scroll-to-bottom";
 import { useState, useRef } from "react";
 import { toast } from "sonner";
 import { Message } from "ai";
+import { Button } from "@/components/ui/button";
+import { BroomIcon } from "@/components/icons";
 
 export function Chat() {
   const chatId = "leadership-coach";
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [streamingMessageId, setStreamingMessageId] = useState<string | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const [messagesContainerRef, messagesEndRef] =
     useScrollToBottom<HTMLDivElement>();
+
+  // Helper function to simulate typing effect by adding characters gradually
+  const simulateTyping = (text: string, messageId: string, delay: number = 20) => {
+    return new Promise<void>((resolve) => {
+      let currentIndex = 0;
+      const interval = setInterval(() => {
+        if (currentIndex < text.length) {
+          const char = text[currentIndex];
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === messageId
+                ? { ...msg, content: msg.content + char }
+                : msg
+            )
+          );
+          currentIndex++;
+        } else {
+          clearInterval(interval);
+          resolve();
+        }
+      }, delay);
+    });
+  };
 
   const handleSubmit = async (e?: { preventDefault?: () => void }) => {
     e?.preventDefault?.();
@@ -61,6 +87,7 @@ export function Chat() {
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
+      setStreamingMessageId(assistantMessage.id);
 
       const reader = response.body?.getReader();
       if (!reader) {
@@ -83,15 +110,25 @@ export function Chat() {
             try {
               const data = JSON.parse(line.slice(6));
               if (data.chunk) {
-                setMessages((prev) =>
-                  prev.map((msg) =>
-                    msg.id === assistantMessage.id
-                      ? { ...msg, content: msg.content + data.chunk }
-                      : msg
-                  )
-                );
+                // For smoother streaming, add chunks character by character
+                const chunk = data.chunk;
+
+                // If chunk is longer than 5 characters, simulate typing
+                if (chunk.length > 5) {
+                  await simulateTyping(chunk, assistantMessage.id, 15);
+                } else {
+                  // For small chunks, add immediately
+                  setMessages((prev) =>
+                    prev.map((msg) =>
+                      msg.id === assistantMessage.id
+                        ? { ...msg, content: msg.content + chunk }
+                        : msg
+                    )
+                  );
+                }
               } else if (data.done) {
                 setIsLoading(false);
+                setStreamingMessageId(null);
                 return;
               }
             } catch (error) {
@@ -102,14 +139,15 @@ export function Chat() {
       }
     } catch (error: any) {
       if (error.name === "AbortError") {
-        toast.info("Request cancelled");
+        toast.info("İstek iptal edildi");
       } else {
         console.error("Chat error:", error);
-        toast.error("Failed to send message. Please try again.");
+        toast.error("Mesaj gönderilemedi. Lütfen tekrar deneyin.");
       }
       setMessages((prev) => prev.slice(0, -1)); // Remove the empty assistant message
     } finally {
       setIsLoading(false);
+      setStreamingMessageId(null);
       abortControllerRef.current = null;
     }
   };
@@ -118,6 +156,7 @@ export function Chat() {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
       setIsLoading(false);
+      setStreamingMessageId(null);
     }
   };
 
@@ -138,17 +177,32 @@ export function Chat() {
         method: "POST",
       });
       setMessages([]);
-      toast.success("Conversation reset");
+      toast.success("Konuşma sıfırlandı");
     } catch (error) {
-      toast.error("Failed to reset conversation");
+      toast.error("Konuşma sıfırlanamadı");
     }
   };
 
   return (
-    <div className="flex flex-col min-w-0 h-[calc(100dvh-52px)] bg-background">
+    <div className="flex flex-col min-w-0 h-[calc(100dvh-52px)] bg-gradient-to-b from-gray-50 to-white">
+      {/* Clear button in top-right corner */}
+      {messages.length > 0 && (
+        <div className="flex justify-end p-4 pb-0">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={resetChat}
+            className="text-gray-500 hover:text-gray-700 hover:bg-gray-100 h-14 w-14"
+            title="Sohbeti temizle"
+          >
+            <BroomIcon size={28} />
+          </Button>
+        </div>
+      )}
+
       <div
         ref={messagesContainerRef}
-        className="flex flex-col min-w-0 gap-6 flex-1 overflow-y-scroll pt-4"
+        className="flex flex-col min-w-0 gap-6 flex-1 overflow-y-scroll pt-4 chat-scroll"
       >
         {messages.length === 0 && <Overview />}
 
@@ -157,7 +211,7 @@ export function Chat() {
             key={message.id}
             chatId={chatId}
             message={message}
-            isLoading={isLoading && messages.length - 1 === index}
+            isLoading={isLoading && message.id === streamingMessageId}
           />
         ))}
 
@@ -176,7 +230,7 @@ export function Chat() {
           e.preventDefault();
           handleSubmit();
         }}
-        className="flex mx-auto px-4 bg-background pb-4 md:pb-6 gap-2 w-full md:max-w-3xl"
+        className="flex mx-auto px-4 bg-gradient-to-t from-white to-transparent pb-4 md:pb-6 gap-2 w-full md:max-w-3xl"
       >
         <MultimodalInput
           chatId={chatId}
@@ -189,15 +243,6 @@ export function Chat() {
           setMessages={setMessages}
           append={append}
         />
-        {messages.length > 0 && (
-          <button
-            type="button"
-            onClick={resetChat}
-            className="px-3 py-2 text-sm bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
-          >
-            Reset
-          </button>
-        )}
       </form>
     </div>
   );

@@ -12,8 +12,25 @@ export function useScrollToBottom<T extends HTMLElement>(): [
     const end = endRef.current;
 
     if (container && end) {
+      let timeoutId: NodeJS.Timeout;
+
       const observer = new MutationObserver(() => {
-        end.scrollIntoView({ behavior: "auto", block: "end" });
+        // Debounce scroll to avoid excessive scrolling during streaming
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          // Check if user is near bottom before auto-scrolling
+          const isNearBottom =
+            container.scrollTop + container.clientHeight >=
+            container.scrollHeight - 100;
+
+          if (isNearBottom) {
+            end.scrollIntoView({
+              behavior: "smooth",
+              block: "end",
+              inline: "nearest"
+            });
+          }
+        }, 50);
       });
 
       observer.observe(container, {
@@ -23,7 +40,10 @@ export function useScrollToBottom<T extends HTMLElement>(): [
         characterData: true,
       });
 
-      return () => observer.disconnect();
+      return () => {
+        observer.disconnect();
+        clearTimeout(timeoutId);
+      };
     }
   }, []);
 
