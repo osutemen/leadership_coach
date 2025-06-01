@@ -12,7 +12,7 @@ export const Overview = () => {
     >
       <div className="mb-8 w-[320px]">
         <img
-          src="/images/leadership-coach-logo.png"
+          src="/logo.png"
           alt="Leadership Coach"
           className="w-full h-auto object-contain"
         />
