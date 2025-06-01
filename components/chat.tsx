@@ -177,7 +177,7 @@ export function Chat() {
         method: "POST",
       });
       setMessages([]);
-      toast("Conversation cleared");
+      toast("Conversation is cleared");
     } catch (error) {
       toast.error("Failed to clear conversation");
     }
@@ -193,7 +193,7 @@ export function Chat() {
             size="icon"
             onClick={resetChat}
             className="text-gray-500 hover:text-gray-700 hover:bg-gray-100 h-14 w-14"
-            title="Sohbeti temizle"
+            title="Clear"
           >
             <BroomIcon size={28} />
           </Button>
