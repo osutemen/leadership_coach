@@ -107,7 +107,7 @@ export function MultimodalInput({
     <div className="relative w-full flex flex-col gap-4">
       <Textarea
         ref={textareaRef}
-        placeholder="Ask me anything about leadership..."
+        placeholder={messages.length === 0 ? "Ask me anything about leadership..." : ""}
         value={input}
         onChange={handleInput}
         className={cn(

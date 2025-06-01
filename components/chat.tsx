@@ -139,10 +139,10 @@ export function Chat() {
       }
     } catch (error: any) {
       if (error.name === "AbortError") {
-        toast.info("İstek iptal edildi");
+        toast.info("Request cancelled");
       } else {
         console.error("Chat error:", error);
-        toast.error("Mesaj gönderilemedi. Lütfen tekrar deneyin.");
+        toast.error("Failed to send message. Please try again.");
       }
       setMessages((prev) => prev.slice(0, -1)); // Remove the empty assistant message
     } finally {
@@ -177,9 +177,9 @@ export function Chat() {
         method: "POST",
       });
       setMessages([]);
-      toast.success("Konuşma sıfırlandı");
+      toast("Conversation cleared");
     } catch (error) {
-      toast.error("Konuşma sıfırlanamadı");
+      toast.error("Failed to clear conversation");
     }
   };
 
@@ -200,50 +200,82 @@ export function Chat() {
         </div>
       )}
 
-      <div
-        ref={messagesContainerRef}
-        className="flex flex-col min-w-0 gap-6 flex-1 overflow-y-scroll pt-4 chat-scroll"
-      >
-        {messages.length === 0 && <Overview />}
-
-        {messages.map((message, index) => (
-          <PreviewMessage
-            key={message.id}
-            chatId={chatId}
-            message={message}
-            isLoading={isLoading && message.id === streamingMessageId}
-          />
-        ))}
-
-        {isLoading &&
-          messages.length > 0 &&
-          messages[messages.length - 1].role === "user" && <ThinkingMessage />}
-
+      {/* Messages container */}
+      {messages.length > 0 && (
         <div
-          ref={messagesEndRef}
-          className="shrink-0 min-w-[24px] min-h-[24px]"
-        />
-      </div>
+          ref={messagesContainerRef}
+          className="flex flex-col min-w-0 gap-6 flex-1 overflow-y-scroll pt-4 chat-scroll"
+        >
+          {messages.map((message, index) => (
+            <PreviewMessage
+              key={message.id}
+              chatId={chatId}
+              message={message}
+              isLoading={isLoading && message.id === streamingMessageId}
+            />
+          ))}
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit();
-        }}
-        className="flex mx-auto px-4 bg-gradient-to-t from-white to-transparent pb-4 md:pb-6 gap-2 w-full md:max-w-3xl"
-      >
-        <MultimodalInput
-          chatId={chatId}
-          input={input}
-          setInput={setInput}
-          handleSubmit={handleSubmit}
-          isLoading={isLoading}
-          stop={stop}
-          messages={messages}
-          setMessages={setMessages}
-          append={append}
-        />
-      </form>
+          {isLoading &&
+            messages.length > 0 &&
+            messages[messages.length - 1].role === "user" && <ThinkingMessage />}
+
+          <div
+            ref={messagesEndRef}
+            className="shrink-0 min-w-[24px] min-h-[24px]"
+          />
+        </div>
+      )}
+
+      {/* Centered input form when no messages */}
+      {messages.length === 0 && (
+        <div className="flex-1 flex flex-col items-center justify-center px-4" style={{ paddingBottom: "25vh" }}>
+          <Overview />
+          <div className="w-full md:max-w-2xl">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
+              className="flex gap-2 w-full"
+            >
+              <MultimodalInput
+                chatId={chatId}
+                input={input}
+                setInput={setInput}
+                handleSubmit={handleSubmit}
+                isLoading={isLoading}
+                stop={stop}
+                messages={messages}
+                setMessages={setMessages}
+                append={append}
+              />
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Bottom input form when there are messages */}
+      {messages.length > 0 && (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+          className="flex mx-auto px-4 bg-gradient-to-t from-white to-transparent pb-4 md:pb-6 gap-2 w-full md:max-w-3xl"
+        >
+          <MultimodalInput
+            chatId={chatId}
+            input={input}
+            setInput={setInput}
+            handleSubmit={handleSubmit}
+            isLoading={isLoading}
+            stop={stop}
+            messages={messages}
+            setMessages={setMessages}
+            append={append}
+          />
+        </form>
+      )}
     </div>
   );
 }

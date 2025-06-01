@@ -32,7 +32,7 @@ class LeadershipCoachService:
                 text={"format": {"type": "text"}},
                 reasoning={},
                 tools=TOOLS,
-                temperature=1,
+                temperature=0.6,
                 tool_choice="auto",
                 max_output_tokens=2048,
                 top_p=1,

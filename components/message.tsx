@@ -169,7 +169,7 @@ export const ThinkingMessage = () => {
               animate={{ opacity: [0, 1, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             >
-              Düşünüyor...
+              Thinking...
             </motion.div>
           </div>
         </div>
