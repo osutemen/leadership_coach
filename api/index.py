@@ -13,10 +13,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
-app.include_router(chat_router, prefix="/api")
+# Include routers without /api prefix since Vercel adds it
+app.include_router(chat_router)
 
 
-@app.get("/api/health")
+@app.get("/health")
 async def health_check():
     return {"status": "healthy"}
+
+
+# Vercel serverless function handler
+from mangum import Mangum
+
+handler = Mangum(app)
