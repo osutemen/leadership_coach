@@ -4,7 +4,7 @@
 TOOLS = [
     {
         "type": "file_search",
-        "vector_store_ids": ["vs_683c4fb373d48191873ad91e0789707e"],
+        "vector_store_ids": ["vs_683d88deddac8191b56f0d51512568c9"],
     },
     {
         "type": "web_search_preview",
@@ -29,7 +29,7 @@ SYSTEM_PROMPT = [
                  - Search the provided transcripts and expert interviews first.
                  - Your insights must be drawn from these, with explicit attribution to the individual.
                  - To find out who said the subject mentioned in the reference, the owner of the report is in the title of the document. You can use this as a reference
-                 - To identify who made a specific statement, use the title of the document in which the quote appears; it contains the name of the individual. Cite it clearly (e.g., “Source: [Document Title] – [Name]”).
+                 - To identify who made a specific statement, use the title of the document in which the quote appears; it contains the name of the individual. Cite it clearly (e.g., ).
 
                  2. Fallback to web search without asking:
                  - If relevant insights are not found in the documents, conduct an internet search automatically.
