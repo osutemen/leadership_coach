@@ -2,7 +2,12 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv
 from typing import List, Dict, Any, AsyncGenerator
-from ..utils.prompt import TOOLS, SYSTEM_PROMPT
+
+# Use absolute imports for Vercel compatibility
+try:
+    from api.utils.prompt import TOOLS, SYSTEM_PROMPT
+except ImportError:
+    from ..utils.prompt import TOOLS, SYSTEM_PROMPT
 
 load_dotenv()
 

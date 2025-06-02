@@ -1,7 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routes.chat import router as chat_router
 import os
+
+# Use absolute imports for Vercel compatibility
+try:
+    from api.routes.chat import router as chat_router
+except ImportError:
+    from .routes.chat import router as chat_router
 
 app = FastAPI(title="Leadership Coach API")
 

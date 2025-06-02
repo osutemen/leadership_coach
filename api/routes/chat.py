@@ -6,7 +6,12 @@ from typing import Optional
 import json
 import sys
 import time
-from ..services.leadership_coach import LeadershipCoachService
+
+# Use absolute imports for Vercel compatibility
+try:
+    from api.services.leadership_coach import LeadershipCoachService
+except ImportError:
+    from ..services.leadership_coach import LeadershipCoachService
 
 router = APIRouter()
 
