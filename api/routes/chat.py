@@ -7,7 +7,6 @@ import json
 import sys
 import time
 
-# Use absolute imports for Vercel compatibility
 try:
     from api.services.leadership_coach import LeadershipCoachService
 except ImportError:

@@ -3,7 +3,6 @@ import os
 from dotenv import load_dotenv
 from typing import List, Dict, Any, AsyncGenerator
 
-# Use absolute imports for Vercel compatibility
 try:
     from api.utils.prompt import TOOLS, SYSTEM_PROMPT
 except ImportError:

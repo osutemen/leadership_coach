@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   rewrites: async () => {
-    // Only need rewrites for development since Vercel handles API routing in production
+    // Only need rewrites for development to proxy API calls
     if (process.env.NODE_ENV === "development") {
       return [
         {
