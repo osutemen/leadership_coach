@@ -12,7 +12,9 @@ export async function POST() {
         }
 
         const data = await response.json();
-        return Response.json(data);
+        return new Response(JSON.stringify(data), {
+            headers: { 'Content-Type': 'application/json' }
+        });
     } catch (error) {
         console.error('Error in chat reset API route:', error);
         return new Response(
