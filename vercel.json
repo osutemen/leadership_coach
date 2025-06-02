@@ -1,7 +1,7 @@
 {
   "functions": {
-    "api/fastapi/chat.py": {
-      "runtime": "@vercel/python"
+    "api/**": {
+      "excludeFiles": "{.next,.git,node_modules}/**"
     }
   }
 }

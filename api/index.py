@@ -7,7 +7,7 @@ app = FastAPI(title="Leadership Coach API")
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Next.js development server
+    allow_origins=["*"],  # Allow all origins for Vercel deployment
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
