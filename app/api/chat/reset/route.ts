@@ -20,7 +20,10 @@ export async function POST(request: NextRequest) {
         }
 
         const data = await response.json();
-        return Response.json(data);
+        return new Response(JSON.stringify(data), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+        });
 
     } catch (error) {
         console.error('[NEXTJS] Error in reset proxy:', error);
