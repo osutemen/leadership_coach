@@ -2,33 +2,12 @@
 
 import type { Message } from "ai";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 
 import { SparklesIcon } from "./icons";
 import { Markdown } from "./markdown";
 import { PreviewAttachment } from "./preview-attachment";
 import { cn } from "@/lib/utils";
 import { Weather } from "./weather";
-
-// Typing cursor component
-const TypingCursor = ({ isVisible }: { isVisible: boolean }) => {
-  return (
-    <motion.span
-      className={cn(
-        "inline-block w-0.5 h-4 bg-gray-600 ml-1 typing-cursor",
-        isVisible ? "opacity-100" : "opacity-0"
-      )}
-      animate={{
-        opacity: isVisible ? [1, 0] : 0,
-      }}
-      transition={{
-        duration: 0.8,
-        repeat: isVisible ? Infinity : 0,
-        repeatType: "reverse",
-      }}
-    />
-  );
-};
 
 export const PreviewMessage = ({
   message,
@@ -38,27 +17,15 @@ export const PreviewMessage = ({
   message: Message;
   isLoading: boolean;
 }) => {
-  const [showCursor, setShowCursor] = useState(false);
-
-  // Show cursor when assistant message is being streamed
-  useEffect(() => {
-    if (message.role === "assistant" && isLoading) {
-      setShowCursor(true);
-    } else {
-      // Hide cursor after a brief delay when streaming completes
-      const timeout = setTimeout(() => setShowCursor(false), 500);
-      return () => clearTimeout(timeout);
-    }
-  }, [message.role, isLoading, message.content]);
-
   return (
     <motion.div
       className={cn(
-        "w-full mx-auto max-w-3xl px-4 group/message streaming-message",
+        "w-full mx-auto max-w-3xl px-4 group/message",
         isLoading && message.role === "assistant" && "streaming-content"
       )}
       initial={{ y: 5, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       data-role={message.role}
     >
       <div
@@ -67,8 +34,20 @@ export const PreviewMessage = ({
         )}
       >
         {message.role === "assistant" && (
-          <div className="size-8 flex items-center rounded-full justify-center ring-1 shrink-0 ring-border">
-            <SparklesIcon size={14} />
+          <div className={cn(
+            "size-8 flex items-center rounded-full justify-center ring-1 shrink-0 ring-border",
+            isLoading && "animate-pulse"
+          )}>
+            {isLoading ? (
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              >
+                <SparklesIcon size={14} />
+              </motion.div>
+            ) : (
+              <SparklesIcon size={14} />
+            )}
           </div>
         )}
 
@@ -76,13 +55,12 @@ export const PreviewMessage = ({
           {message.content && (
             <div className="flex flex-col gap-4">
               <div className={cn(
-                "relative streaming-text",
+                "relative min-h-[1.5rem]",
                 isLoading && message.role === "assistant" && "streaming-content"
               )}>
-                <Markdown>{message.content as string}</Markdown>
-                {message.role === "assistant" && showCursor && (
-                  <TypingCursor isVisible={true} />
-                )}
+                <div className="w-full">
+                  <Markdown>{message.content as string}</Markdown>
+                </div>
               </div>
             </div>
           )}
@@ -142,7 +120,7 @@ export const ThinkingMessage = () => {
     <motion.div
       className="w-full mx-auto max-w-3xl px-4 group/message thinking-animation"
       initial={{ y: 5, opacity: 0 }}
-      animate={{ y: 0, opacity: 1, transition: { delay: 1 } }}
+      animate={{ y: 0, opacity: 1, transition: { delay: 0.5 } }}
       data-role={role}
     >
       <div
