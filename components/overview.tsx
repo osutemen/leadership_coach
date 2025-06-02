@@ -12,9 +12,9 @@ export const Overview = () => {
     >
       <div className="mb-8 w-[320px]">
         <img
-          src="/logo.png"
+          src="/images/logo.png"
           alt="Leadership Coach"
-          className="w-full h-auto object-contain"
+          className="w-full h-auto object-contain rounded-2xl shadow-lg shadow-black/10 border border-gray-100/50"
         />
       </div>
     </motion.div>
