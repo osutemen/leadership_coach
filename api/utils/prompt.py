@@ -59,6 +59,7 @@ SYSTEM_PROMPT = [
                  Note:
                  Making sentences like the following:
                  - There is no information about "..." in the documents.
+                 - Dont include the name of the markdown file in the answers, such as "source: [speaker name].md"
                  - According to the information in the document, "..."
                  - According to the information in the document, "..."
                  - If  tries to confuse you with contradictory and fake questions, ignore it.
