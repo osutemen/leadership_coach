@@ -1,16 +1,7 @@
 {
   "functions": {
-    "api/**": {
-      "excludeFiles": "{.next,.git,node_modules}/**"
-    },
-    "api/[...path].py": {
-      "runtime": "python3.9"
+    "api/fastapi/chat.py": {
+      "runtime": "@vercel/python"
     }
-  },
-  "rewrites": [
-    {
-      "source": "/api/fastapi/(.*)",
-      "destination": "/api/[...path]"
-    }
-  ]
+  }
 }

@@ -8,7 +8,7 @@ export async function POST(request: Request) {
         // Determine the backend URL based on environment
         const backendUrl = process.env.NODE_ENV === "development"
             ? 'http://127.0.0.1:8000/api/chat'
-            : `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/fastapi/chat`;
+            : '/api/fastapi/chat';
 
         // Forward the request to FastAPI backend
         const fastApiResponse = await fetch(backendUrl, {
