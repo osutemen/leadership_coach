@@ -1,16 +1,11 @@
 export async function POST() {
     try {
-        // In production, handle the reset logic directly
-        if (process.env.NODE_ENV !== "development") {
-            const { resetChat } = await import('../../../services/chat');
-            const result = resetChat();
-            return new Response(JSON.stringify(result), {
-                headers: { 'Content-Type': 'application/json' }
-            });
-        }
+        // Determine the backend URL based on environment
+        const backendUrl = process.env.NODE_ENV === "development"
+            ? 'http://127.0.0.1:8000/api/chat/reset'
+            : `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/fastapi/chat/reset`;
 
-        // In development, forward to FastAPI backend
-        const response = await fetch('http://127.0.0.1:8000/api/chat/reset', {
+        const response = await fetch(backendUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

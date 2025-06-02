@@ -8,35 +8,9 @@ export async function POST(request: Request) {
         // Determine the backend URL based on environment
         const backendUrl = process.env.NODE_ENV === "development"
             ? 'http://127.0.0.1:8000/api/chat'
-            : '/api/chat'; // This will be handled by Vercel Functions
+            : `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/fastapi/chat`;
 
-        // In production, handle the chat logic directly in this function
-        if (process.env.NODE_ENV !== "development") {
-            // Import the FastAPI chat logic directly
-            const { getChatResponse } = await import('../../services/chat');
-
-            console.log('[NEXTJS API] Processing chat request in production...');
-
-            // Process the chat request
-            const stream = await getChatResponse(body);
-
-            return new Response(stream, {
-                headers: {
-                    'Content-Type': 'text/event-stream',
-                    'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
-                    'Pragma': 'no-cache',
-                    'Expires': '0',
-                    'Connection': 'keep-alive',
-                    'X-Accel-Buffering': 'no',
-                    'X-Content-Type-Options': 'nosniff',
-                    'Transfer-Encoding': 'chunked',
-                    'Proxy-Buffering': 'no',
-                    'Buffer': 'no',
-                },
-            });
-        }
-
-        // In development, forward the request to FastAPI backend
+        // Forward the request to FastAPI backend
         const fastApiResponse = await fetch(backendUrl, {
             method: 'POST',
             headers: {
