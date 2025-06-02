@@ -138,6 +138,9 @@
         scroll-behavior: smooth;
         scrollbar-width: thin;
         scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
+        /* Enhanced smooth scrolling for streaming content */
+        scroll-snap-type: none;
+        overscroll-behavior: contain;
     }
 
     .chat-scroll::-webkit-scrollbar {
@@ -151,6 +154,7 @@
     .chat-scroll::-webkit-scrollbar-thumb {
         background-color: rgba(156, 163, 175, 0.3);
         border-radius: 3px;
+        transition: background-color 0.2s ease;
     }
 
     .chat-scroll::-webkit-scrollbar-thumb:hover {
@@ -164,5 +168,10 @@
         -moz-user-select: text;
         -ms-user-select: text;
         line-height: 1.6;
+    }
+
+    /* Smooth auto-scroll animation */
+    .auto-scroll {
+        transition: scroll-behavior 0.3s ease;
     }
 }

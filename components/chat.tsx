@@ -21,6 +21,17 @@ export function Chat() {
   const [messagesContainerRef, messagesEndRef] =
     useScrollToBottom<HTMLDivElement>();
 
+  // Function to force scroll to bottom
+  const forceScrollToBottom = useCallback(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+        inline: "nearest"
+      });
+    }
+  }, [messagesEndRef]);
+
   // Optimized streaming update function with immediate UI updates
   const updateStreamingMessage = useCallback((messageId: string, newChunk: string) => {
     setMessages((prev) => {
@@ -50,6 +61,9 @@ export function Chat() {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
+
+    // Force scroll to bottom after adding user message
+    setTimeout(() => forceScrollToBottom(), 100);
 
     // Create abort controller for this request
     const abortController = new AbortController();
@@ -87,6 +101,9 @@ export function Chat() {
 
       setMessages((prev) => [...prev, assistantMessage]);
       setStreamingMessageId(assistantMessage.id);
+
+      // Force scroll to bottom when assistant message is added
+      setTimeout(() => forceScrollToBottom(), 100);
 
       const reader = response.body?.getReader();
       if (!reader) {
@@ -191,6 +208,10 @@ export function Chat() {
       createdAt: message.createdAt || new Date(),
     };
     setMessages((prev) => [...prev, messageToAdd]);
+
+    // Force scroll to bottom when new message is appended
+    setTimeout(() => forceScrollToBottom(), 100);
+
     return messageToAdd.id;
   };
 
@@ -227,7 +248,7 @@ export function Chat() {
       {messages.length > 0 && (
         <div
           ref={messagesContainerRef}
-          className="flex flex-col min-w-0 gap-6 flex-1 overflow-y-scroll pt-4 chat-scroll"
+          className="flex flex-col min-w-0 gap-6 flex-1 overflow-y-scroll pt-4 chat-scroll auto-scroll"
         >
           {messages.map((message, index) => (
             <PreviewMessage
