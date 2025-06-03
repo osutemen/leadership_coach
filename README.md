@@ -1,118 +1,248 @@
-# Leadership Coach Chatbot
+# Leadership Coach 🚀
 
-A professional leadership coaching chatbot powered by OpenAI's GPT-4.1 model with file search and web search capabilities. Built with Next.js frontend and FastAPI backend.
+An AI-powered leadership coaching platform for modern leadership and professional development. Built with OpenAI's GPT-4.1 model, featuring file search and web search capabilities for intelligent leadership guidance.
 
-## Features
+## 🌟 Features
 
-- **Leadership Guidance**: Provides in-depth guidance on leadership practices and professional development
-- **File Search**: Searches through uploaded documents for relevant information
-- **Web Search**: Performs internet searches when additional context is needed
-- **Streaming Responses**: Real-time streaming chat responses
-- **Professional Tone**: Maintains a professional and insightful tone suitable for business professionals
-- **Conversation Memory**: Maintains conversation history for context
+### 🎯 Core Features
+- **Expert Leadership Guidance**: In-depth guidance from curated leadership resources
+- **File Search**: Intelligent search and analysis through uploaded documents
+- **Web Search**: Automatic internet research for current information
+- **Real-time Responses**: Streaming chat experience
+- **Professional Tone**: Sharp and effective communication suitable for business world
+- **Conversation History**: Chat memory for context preservation
 
-## Prerequisites
+### 🛠️ Technical Features
+- **Modern Stack**: Next.js 13 + FastAPI + TypeScript
+- **AI Integration**: OpenAI GPT-4.1 Responses API
+- **Streaming**: Real-time response streaming
+- **Docker Support**: Full containerization
+- **Responsive UI**: Modern and user-friendly interface
 
-- Python 3.8+
-- Node.js 16+
-- OpenAI API key
+## 🏗️ Technology Architecture
 
-## Setup
+### Frontend
+- **Framework**: Next.js 13 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS + shadcn/ui
+- **State Management**: React Hooks
+- **Icons**: Lucide React
+- **Animations**: Framer Motion
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd ai-sdk-preview-python-streaming
-   ```
+### Backend
+- **Framework**: FastAPI (Python)
+- **AI Integration**: OpenAI Python SDK
+- **Tools**: File Search + Web Search Preview
+- **Streaming**: Server-Sent Events (SSE)
+- **Configuration**: Environment-based settings
 
-2. **Install Python dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+### Deployment
+- **Containerization**: Docker + Docker Compose
+- **Development**: Hot reload for both frontend and backend
+- **Production**: Optimized builds
 
-3. **Install Node.js dependencies**
-   ```bash
-   npm install
-   ```
+## 📋 Prerequisites
 
-4. **Set up environment variables**
-   Create a `.env` file in the root directory:
-   ```bash
-   OPENAI_API_KEY=your_openai_api_key_here
-   ```
+- **Python**: 3.8 or higher
+- **Node.js**: 18.0.0 or higher
+- **OpenAI API Key**: Account with GPT-4.1 access
+- **Docker** (optional): For container-based development
 
-5. **Configure Vector Store** (Optional)
-   If you want to use file search capabilities, update the `vector_store_ids` in `api/utils/prompt.py` with your own vector store ID.
+## 🚀 Setup
 
-## Running the Application
+### 1. Clone the Repository
+```bash
+git clone https://github.com/your-username/leadership_coach.git
+cd leadership_coach
+```
 
-1. **Start the FastAPI backend**
-   ```bash
-   npm run fastapi-dev
-   ```
+### 2. Set Up Environment Variables
+```bash
+# Create .env file
+cp .env.example .env
 
-2. **Start the Next.js frontend** (in a new terminal)
-   ```bash
-   npm run next-dev
-   ```
+# Edit .env file
+OPENAI_API_KEY=your_openai_api_key_here
+```
 
-3. **Or run both simultaneously**
-   ```bash
-   npm run dev
-   ```
+### 3. Install Python Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Install Node.js Dependencies
+```bash
+npm install
+```
+
+### 5. Vector Store Configuration (Optional)
+For file search functionality, update the `vector_store_ids` in `api/utils/prompt.py` with your own vector store ID.
+
+## 🎮 Running the Application
+
+### Development Mode
+
+#### Option 1: Run services separately
+```bash
+# Terminal 1: Backend (FastAPI)
+npm run fastapi-dev
+
+# Terminal 2: Frontend (Next.js)
+npm run next-dev
+```
+
+#### Option 2: Run concurrently
+```bash
+npm run dev
+```
+
+#### Option 3: Docker
+```bash
+docker-compose up --build
+```
 
 The application will be available at `http://localhost:3000`.
 
-## API Endpoints
+## 🔌 API Endpoints
 
-- `POST /api/chat` - Send a message to the leadership coach
-- `POST /api/chat/reset` - Reset the conversation history
-- `GET /api/chat/history` - Get the current conversation history
-- `GET /api/health` - Health check endpoint
+| Endpoint | Method | Description |
+|----------|---------|-------------|
+| `/api/chat` | POST | Chat with leadership coach |
+| `/api/chat/reset` | POST | Reset conversation history |
+| `/api/chat/history` | GET | Get current conversation history |
+| `/api/health` | GET | System health check |
 
-## Usage
+## 💬 Usage Examples
 
-1. Open your browser and navigate to `http://localhost:3000`
-2. Start asking questions about leadership, professional development, or business intelligence
-3. The coach will provide personalized, professional guidance
-4. Use the "Reset" button to start a new conversation
+### Leadership Questions
+```
+"What are the key qualities of an effective leader?"
+"How can I improve my team's communication?"
+"What strategies can I use for better decision making?"
+"How do I handle conflict in my team?"
+"What professional development goals should I set?"
+```
 
-## Example Questions
+### Business Intelligence Questions
+```
+"Which company received the largest investment in 2024?"
+"What are the current market trends?"
+"What are digital transformation strategies?"
+```
 
-- "What are the key qualities of an effective leader?"
-- "How can I improve my team's communication?"
-- "What strategies can I use for better decision making?"
-- "How do I handle conflict in my team?"
-- "What are some professional development goals I should set?"
+## 📁 Project Structure
 
-## Features in Detail
+```
+leadership_coach/
+├── 📁 app/                    # Next.js App Router
+│   ├── 📁 (chat)/            # Chat pages
+│   ├── 📁 api/               # API route handlers
+│   └── layout.tsx            # Main layout
+├── 📁 components/            # React components
+│   ├── chat.tsx             # Main chat component
+│   ├── message.tsx          # Message component
+│   ├── multimodal-input.tsx # Input component
+│   └── 📁 ui/               # UI components
+├── 📁 api/                  # FastAPI backend
+│   ├── 📁 services/         # Business logic services
+│   │   └── leadership_coach.py
+│   ├── 📁 utils/            # Utility functions
+│   │   └── prompt.py        # AI configuration
+│   └── index.py             # FastAPI main file
+├── 📁 assets/               # Static files
+├── 📁 hooks/                # React hooks
+├── 📁 lib/                  # Helper libraries
+├── docker-compose.yml       # Docker configuration
+├── Dockerfile.frontend      # Frontend Docker
+├── Dockerfile.backend       # Backend Docker
+├── package.json             # Node.js dependencies
+├── requirements.txt         # Python dependencies
+└── README.md               # This file
+```
 
-### File Search
-The leadership coach can search through uploaded documents in the configured vector store to provide context-aware responses based on your organization's materials.
+## 🔧 Development
 
-### Web Search
-When the available documents don't contain sufficient information, the coach performs internet searches to provide comprehensive and up-to-date guidance.
+### Backend Development
+- **FastAPI**: Modern Python web framework
+- **Async/Await**: Asynchronous programming
+- **Streaming**: Real-time response streaming
+- **OpenAI Integration**: GPT-4.1 Responses API
 
-### Professional Tone
-The chatbot is specifically designed to maintain a professional and insightful tone appropriate for business environments.
+### Frontend Development
+- **App Router**: Next.js 13 new routing system
+- **TypeScript**: Type safety
+- **Tailwind**: Utility-first CSS
+- **shadcn/ui**: Modern UI components
 
-## Technology Stack
+### Key Files
+- `api/services/leadership_coach.py`: Main AI service
+- `api/utils/prompt.py`: AI system prompt and tool configuration
+- `components/chat.tsx`: Main chat component
+- `components/multimodal-input.tsx`: User input component
 
-- **Frontend**: Next.js, React, TypeScript, Tailwind CSS
-- **Backend**: FastAPI, Python
-- **AI**: OpenAI GPT-4.1 with Responses API
-- **Tools**: File Search, Web Search Preview
+## 🐳 Docker Deployment
 
-## Development
+### Development
+```bash
+docker-compose up --build
+```
 
-The application consists of:
+### Production
+```bash
+docker-compose -f docker-compose.prod.yml up --build
+```
 
-- **Frontend** (`components/`, `app/`): Next.js React application
-- **Backend** (`api/`): FastAPI Python application
-- **Services** (`api/services/`): Business logic for the leadership coach
-- **Utils** (`api/utils/`): Configuration and utility functions
+## 🔐 Security
 
-## License
+- API keys stored in environment variables
+- Input validation and sanitization
+- Rate limiting (recommended for production)
+- CORS configuration
 
-MIT License
-# leadership_coach
+## 🚨 Troubleshooting
+
+### Common Issues
+
+1. **OpenAI API Key Error**
+   ```bash
+   # Check .env file
+   cat .env | grep OPENAI_API_KEY
+   ```
+
+2. **Port Conflicts**
+   ```bash
+   # Check ports
+   lsof -i :3000
+   lsof -i :8000
+   ```
+
+3. **Python Dependency Error**
+   ```bash
+   # Create virtual environment
+   python -m venv venv
+   source venv/bin/activate  # macOS/Linux
+   # venv\Scripts\activate   # Windows
+   pip install -r requirements.txt
+   ```
+
+## 📄 License
+
+MIT License - See [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📞 Contact
+
+For questions about the project:
+- 📧 Email: [your-email@example.com]
+- 🐛 Issues: [GitHub Issues](https://github.com/your-username/leadership_coach/issues)
+
+---
+
+⚡ **AI-powered coaching experience for modern leadership** ⚡
