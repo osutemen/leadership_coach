@@ -43,7 +43,7 @@ An AI-powered leadership coaching platform for modern leadership and professiona
 
 ## 📋 Prerequisites
 
-- **Python**: 3.8 or higher
+- **Python**: 3.10 or higher
 - **Node.js**: 18.0.0 or higher
 - **OpenAI API Key**: Account with GPT-4.1 access
 - **Docker** (optional): For container-based development
