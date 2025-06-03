@@ -110,7 +110,7 @@ The application will be available at `http://localhost:3000`.
 | `/api/chat` | POST | Chat with leadership coach |
 | `/api/chat/reset` | POST | Reset conversation history |
 | `/api/chat/history` | GET | Get current conversation history |
-| `/api/health` | GET | System health check |
+| `/api/youtube/process` | POST | Process YouTube playlist and create vector store |
 
 ## 💬 Usage Examples
 
