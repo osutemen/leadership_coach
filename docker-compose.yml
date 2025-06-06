@@ -13,6 +13,7 @@ services:
       - NODE_ENV=development
       - BACKEND_URL=http://osbackend:8000
       - FASTAPI_URL=http://osbackend:8000
+      - - OPENAI_API_KEY=${OPENAI_API_KEY}
     depends_on:
       - osbackend
     networks:

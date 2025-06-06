@@ -238,3 +238,5 @@ MIT License - See [LICENSE](LICENSE) file for details.
 5. Open a Pull Request
 
 ⚡ **AI-powered coaching experience for modern leadership** ⚡
+
+
